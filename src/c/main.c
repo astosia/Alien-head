@@ -34,51 +34,26 @@ Layer * time_area_layer;
 static int s_hours, s_minutes, s_weekday, s_day, s_month;
 
 static char* weather_conditions[] = {
-    "\U0000F07B", // 'unknown': 0,
-    "\U0000F00D", // 'clear': 1,
-    "\U0000F00D", // 'sunny': 2,
-    "\U0000F002", // 'partlycloudy': 3,
-    "\U0000F041", // 'mostlycloudy': 4,
-    "\U0000F00C", // 'mostlysunny': 5,
-    "\U0000F002", // 'partlysunny': 6,
-    "\U0000F013", // 'cloudy': 7,
-    "\U0000F019", // 'rain': 8,
-    "\U0000F01B", // 'snow': 9,
-    "\U0000F01D", // 'tstorms': 10,
-    "\U0000F0b5", // 'sleat': 11,
-    "\U0000F00A", // 'flurries': 12,
-    "\U0000F0b6", // 'hazy': 13,
-    "\U0000F01D", // 'chancetstorms': 14,
-    "\U0000F01B", // 'chancesnow': 15,
-    "\U0000F0b5", // 'chancesleat': 16,
-    "\U0000F008", // 'chancerain': 17,
-    "\U0000F01B", // 'chanceflurries': 18,
-    "\U0000F07B", // 'nt_unknown': 19,
-    "\U0000F02E", // 'nt_clear': 20,
-    "\U0000F02E", // 'nt_sunny': 21,
-    "\U0000F083", // 'nt_partlycloudy': 22,
-    "\U0000F086", // 'nt_mostlycloudy': 23,
-    "\U0000F081", // 'nt_mostlysunny': 24,
-    "\U0000F086", // 'nt_partlysunny': 25,
-    "\U0000F013", // 'nt_cloudy': 26,
-    "\U0000F019", // 'nt_rain': 27,
-    "\U0000F01B", // 'nt_snow': 28,
-    "\U0000F01D", // 'nt_tstorms': 29,
-    "\U0000F0b5", // 'nt_sleat': 30,
-    "\U0000F038", // 'nt_flurries': 31,
-    "\U0000F04A", // 'nt_hazy': 32,
-    "\U0000F01D", // 'nt_chancetstorms': 33,
-    "\U0000F038", // 'nt_chancesnow': 34,
-    "\U0000F0B3", // 'nt_chancesleat': 35,
-    "\U0000F036", // 'nt_chancerain': 36,
-    "\U0000F038", // 'nt_chanceflurries': 37,
-    "\U0000F003", // 'fog': 38,
-    "\U0000F04A", // 'nt_fog': 39,
-    "\U0000F050", // 'strong wind': 40,
-    "\U0000F015", // 'hail': 41,
-    "\U0000F056", // 'tornado': 42,
-};
-//////Init Configuration///
+  "\U0000F07B", // 'unknown': 0,
+  "\U0000F00D", // 'clear': 1,
+  "\U0000F00C", // 'fewclouds': 2,
+  "\U0000F041", // 'scattered clouds': 3,
+  "\U0000F013", // 'brokenclouds': 4,
+  "\U0000F019", // 'shower rain': 5,
+  "\U0000F008", // 'rain': 6,
+  "\U0000F076", // 'snow': 7,
+  "\U0000F016", // 'tstorms': 8,
+  "\U0000F021", // 'mist': 9,
+  "\U0000F02E", // 'nt_clear': 10,
+  "\U0000F081", // 'nt_few clouds': 11,
+  "\U0000F086", // 'nt_scattered clouds': 12,
+  "\U0000F013", // 'nt_broken clouds' : 13
+  "\U0000F019", // 'nt_shower rain': 14,
+  "\U0000F036", // 'nt_rain': 15,
+  "\U0000F076", // 'nt_snow': 16,
+  "\U0000F016", // 'nt_tstorms': 17,
+  "\U0000F021", // 'nt_mist': 18,
+};//////Init Configuration///
 //Init Clay
 ClaySettings settings;
 // Initialize the default settings
@@ -149,30 +124,32 @@ static void update_background_picture() {
 //  APP_LOG(APP_LOG_LEVEL_DEBUG, "IconNumberFore is %d", settings.iconnumberfore);
 if(!settings.UseForecast){
   if (!settings.ALIEN ){
-    if(settings.iconnumbernow == 8  || //rain
-       settings.iconnumbernow == 10 || //thunderstorm
-       settings.iconnumbernow == 27 || //night_rain
-       settings.iconnumbernow == 29) //night_thunderstorm
+    if(settings.iconnumbernow == 5  || //showers
+       settings.iconnumbernow == 6 || //rain
+       settings.iconnumbernow == 8 || //thunderstorm
+       settings.iconnumbernow == 14 || //night showers
+       settings.iconnumbernow == 15 || //night rain
+       settings.iconnumbernow == 17) //night_thunderstorm
        {
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENRAIN);
       }
   else if(
-       settings.iconnumbernow == 9  || //snow
-       settings.iconnumbernow == 11 || //sleet
-       settings.iconnumbernow == 12 || //flurries
-       settings.iconnumbernow == 28 || //night_snow
-       settings.iconnumbernow == 30 || //night sleet
-       settings.iconnumbernow == 31) //night_flurries
+       settings.iconnumbernow == 7  || //snow
+  //     settings.iconnumbernow == 7 || //sleet
+  //     settings.iconnumbernow == 12 || //flurries
+  //     settings.iconnumbernow == 28 || //night_snow
+  //     settings.iconnumbernow == 30 || //night sleet
+       settings.iconnumbernow == 16) //night_flurries
       {
       s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENSNOW);
       }
   else if(
-       settings.iconnumbernow == 3  || //partlycloudy
-       settings.iconnumbernow == 4 || //mostlycloudy
-       settings.iconnumbernow == 7 || //cloudy
-       settings.iconnumbernow == 22 || //nt_partlycloudy
-       settings.iconnumbernow == 23 || //nt_mostlycloudy
-       settings.iconnumbernow == 26) //night_cloudy
+       settings.iconnumbernow == 2  || //partlycloudy
+       settings.iconnumbernow == 3 || //mostlycloudy
+       settings.iconnumbernow == 4 || //cloudy
+       settings.iconnumbernow == 11 || //nt_partlycloudy
+       settings.iconnumbernow == 12 || //nt_mostlycloudy
+       settings.iconnumbernow == 13) //night_cloudy
       {
       s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENCLOUD);
       }
@@ -182,30 +159,32 @@ if(!settings.UseForecast){
        }
   }
   else if (
-       settings.iconnumbernow == 8  || //rain
-       settings.iconnumbernow == 10 || //thunderstorm
-       settings.iconnumbernow == 27 || //night_rain
-       settings.iconnumbernow == 29 )
+       settings.iconnumbernow == 5  || //rain
+       settings.iconnumbernow == 6 || //rain
+       settings.iconnumbernow == 8 || //thunderstorm
+       settings.iconnumbernow == 14 || //night showers
+       settings.iconnumbernow == 15 || //night rain
+       settings.iconnumbernow == 17 )
        { //night thunderstorm
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENRAINBLUE);
   }
   else if(
-       settings.iconnumbernow == 9  || //snow
-       settings.iconnumbernow == 11 || //sleet
-       settings.iconnumbernow == 12 || //flurries
-       settings.iconnumbernow == 28 || //night_snow
-       settings.iconnumbernow == 30 || //night sleet
-       settings.iconnumbernow == 31) //night_flurries
+       settings.iconnumbernow == 7  || //snow
+//       settings.iconnumbernow == 11 || //sleet
+//       settings.iconnumbernow == 12 || //flurries
+//       settings.iconnumbernow == 28 || //night_snow
+//       settings.iconnumbernow == 30 || //night sleet
+       settings.iconnumbernow == 16) //night_flurries
       {
       s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENSNOWBLUE);
       }
       else if(
-           settings.iconnumbernow == 3  || //partlycloudy
-           settings.iconnumbernow == 4 || //mostlycloudy
-           settings.iconnumbernow == 7 || //cloudy
-           settings.iconnumbernow == 22 || //nt_partlycloudy
-           settings.iconnumbernow == 23 || //nt_mostlycloudy
-           settings.iconnumbernow == 26) //night_cloudy
+           settings.iconnumbernow == 2  || //partlycloudy
+           settings.iconnumbernow == 3 || //mostlycloudy
+           settings.iconnumbernow == 4 || //cloudy
+           settings.iconnumbernow == 11 || //nt_partlycloudy
+           settings.iconnumbernow == 12 || //nt_mostlycloudy
+           settings.iconnumbernow == 13) //night_cloudy
           {
           s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENCLOUDBLUE);
           }
@@ -216,23 +195,35 @@ if(!settings.UseForecast){
     }
 }
 else{
- if (!settings.ALIEN){
-    if(settings.iconnumberfore == 8  || //rain
-       settings.iconnumberfore == 10 || //thunderstorm
-       settings.iconnumberfore == 27 || //night_rain
-       settings.iconnumberfore == 29) //night_thunderstorm
+  if (!settings.ALIEN ){
+    if(settings.iconnumberfore == 5  || //showers
+       settings.iconnumberfore == 6 || //rain
+       settings.iconnumberfore == 8 || //thunderstorm
+       settings.iconnumberfore == 14 || //night showers
+       settings.iconnumberfore == 15 || //night rain
+       settings.iconnumberfore == 17) //night_thunderstorm
        {
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENRAIN);
       }
   else if(
-       settings.iconnumberfore == 9  || //snow
-       settings.iconnumberfore == 11 || //sleet
-       settings.iconnumberfore == 12 || //flurries
-       settings.iconnumberfore == 28 || //night_snow
-       settings.iconnumberfore == 30 || //night sleet
-       settings.iconnumberfore == 31) //night_flurries
+       settings.iconnumberfore == 7  || //snow
+  //     settings.iconnumberfore == 7 || //sleet
+  //     settings.iconnumberfore == 12 || //flurries
+  //     settings.iconnumberfore == 28 || //night_snow
+  //     settings.iconnumberfore == 30 || //night sleet
+       settings.iconnumberfore == 16) //night_flurries
       {
       s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENSNOW);
+      }
+  else if(
+       settings.iconnumberfore == 2  || //partlycloudy
+       settings.iconnumberfore == 3 || //mostlycloudy
+       settings.iconnumberfore == 4 || //cloudy
+       settings.iconnumberfore == 11 || //nt_partlycloudy
+       settings.iconnumberfore == 12 || //nt_mostlycloudy
+       settings.iconnumberfore == 13) //night_cloudy
+      {
+      s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENCLOUD);
       }
   else {
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENHEAD);
@@ -240,33 +231,44 @@ else{
        }
   }
   else if (
-       settings.iconnumberfore == 8  || //rain
-       settings.iconnumberfore == 10 || //thunderstorm
-       settings.iconnumberfore == 27 || //night_rain
-       settings.iconnumberfore == 29 )
+       settings.iconnumberfore == 5  || //rain
+       settings.iconnumberfore == 6 || //rain
+       settings.iconnumberfore == 8 || //thunderstorm
+       settings.iconnumberfore == 14 || //night showers
+       settings.iconnumberfore == 15 || //night rain
+       settings.iconnumberfore == 17 )
        { //night thunderstorm
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENRAINBLUE);
   }
   else if(
-       settings.iconnumberfore == 9  || //snow
-       settings.iconnumberfore == 11 || //sleet
-       settings.iconnumberfore == 12 || //flurries
-       settings.iconnumberfore == 28 || //night_snow
-       settings.iconnumberfore == 30 || //night sleet
-       settings.iconnumberfore == 31) //night_flurries
+       settings.iconnumberfore == 7  || //snow
+ //       settings.iconnumberfore == 11 || //sleet
+ //       settings.iconnumberfore == 12 || //flurries
+ //       settings.iconnumberfore == 28 || //night_snow
+ //       settings.iconnumberfore == 30 || //night sleet
+       settings.iconnumberfore == 16) //night_flurries
       {
       s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENSNOWBLUE);
       }
+      else if(
+           settings.iconnumberfore == 2  || //partlycloudy
+           settings.iconnumberfore == 3 || //mostlycloudy
+           settings.iconnumberfore == 4 || //cloudy
+           settings.iconnumberfore == 11 || //nt_partlycloudy
+           settings.iconnumberfore == 12 || //nt_mostlycloudy
+           settings.iconnumberfore == 13) //night_cloudy
+          {
+          s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENCLOUDBLUE);
+          }
   else
     {
     s_background_picture = gbitmap_create_with_resource (RESOURCE_ID_IMAGE_ALIENBLUE);
           //APP_LOG(APP_LOG_LEVEL_DEBUG, "should be black & blue");
     }
-}
 
 //}
 }
-
+}
 static void accel_tap_handler(AccelAxisType axis, int32_t direction) {
   // A tap event occured
   showForecastWeather = !showForecastWeather;
